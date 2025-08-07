@@ -40,6 +40,8 @@ typedef ARKitRotationResultHandler = void Function(
     List<ARKitNodeRotationResult> pans);
 typedef ARKitPinchGestureHandler = void Function(
     List<ARKitNodePinchResult> pinch);
+typedef ARKitEnvironmentProbeHandler = void Function(
+    Map<String, dynamic> probeData);
 
 /// A widget that wraps ARSCNView from ARKit.
 class ARKitSceneView extends StatefulWidget {
@@ -304,6 +306,10 @@ class ARKitController {
   /// For example, when coaching is deactivated, your app might restore custom UI.
   VoidCallback? coachingOverlayViewDidDeactivate;
 
+  /// Called when an environment probe anchor is added to the session.
+  /// Provides probe data including position, extent, and texture information.
+  ARKitEnvironmentProbeHandler? onEnvironmentProbeAnchor;
+
   final bool debug;
 
   static const _boolConverter = ValueNotifierConverter();
@@ -551,6 +557,12 @@ class ARKitController {
           break;
         case 'coachingOverlayViewDidDeactivate':
           coachingOverlayViewDidDeactivate?.call();
+          break;
+        case 'onEnvironmentProbeAnchor':
+          if (onEnvironmentProbeAnchor != null) {
+            final probeData = Map<String, dynamic>.from(call.arguments);
+            onEnvironmentProbeAnchor!(probeData);
+          }
           break;
         default:
           if (debug) {

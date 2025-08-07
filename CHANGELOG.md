@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.4
+
+* Enhanced HDR Environment Reflections support with automatic lighting updates
+* Added environment probe anchor callback for debugging and custom material tweaks
+* Added reflective sphere example demonstrating live environment reflections
+* Improved documentation with HDR Environment Reflections setup guide
+
 ## 1.1.3
 
 * Update onGetNodeBoundingBox to use the actual node instead of a new geometry. This allows you to get the bounding box of a loaded model (by @jeremyfb)

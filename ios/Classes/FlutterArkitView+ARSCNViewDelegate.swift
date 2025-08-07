@@ -47,6 +47,13 @@ extension FlutterArkitView: ARSCNViewDelegate {
         }
         let params = prepareParamsForAnchorEvent(node, anchor)
         sendToFlutter("didAddNodeForAnchor", arguments: params)
+        
+        // Handle environment probe anchors
+        if #available(iOS 12.0, *) {
+            if let probeAnchor = anchor as? AREnvironmentProbeAnchor {
+                handleEnvironmentProbeAnchor(probeAnchor)
+            }
+        }
     }
 
     func renderer(_: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
@@ -68,5 +75,24 @@ extension FlutterArkitView: ARSCNViewDelegate {
         var serializedAnchor = serializeAnchor(anchor)
         serializedAnchor["nodeName"] = node.name
         return serializedAnchor
+    }
+    
+    @available(iOS 12.0, *)
+    fileprivate func handleEnvironmentProbeAnchor(_ probeAnchor: AREnvironmentProbeAnchor) {
+        let transform = probeAnchor.transform
+        let position = transform.columns.3
+        
+        var params: [String: Any] = [
+            "identifier": probeAnchor.identifier.uuidString,
+            "position": [position.x, position.y, position.z],
+            "extent": [probeAnchor.extent.x, probeAnchor.extent.y, probeAnchor.extent.z]
+        ]
+        
+        // Add texture name if available
+        if let environmentTexture = probeAnchor.environmentTexture {
+            params["textureName"] = environmentTexture.label ?? "environment_texture"
+        }
+        
+        sendToFlutter("onEnvironmentProbeAnchor", arguments: params)
     }
 }

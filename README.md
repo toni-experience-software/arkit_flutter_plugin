@@ -100,6 +100,7 @@ I would highly recommend to review the [sample](https://github.com/olexale/arkit
 | Network Image Detection | Detects Mars photo and puts a 3D object near it.                            | [code](https://github.com/olexale/arkit_flutter_plugin/blob/master/example/lib/network_image_detection.dart) | |
 | Custom Light | Hello World scene with a custom light spot.                                 | [code](https://github.com/olexale/arkit_flutter_plugin/blob/master/example/lib/custom_light_page.dart) | |
 | Light Estimation | Estimates and applies the light around you.                                 | [code](https://github.com/olexale/arkit_flutter_plugin/blob/master/example/lib/light_estimate_page.dart) | [twitter](https://twitter.com/OlexaLe/status/1120671744426221573) |
+| HDR Environment Reflections | Chrome sphere with live environment reflections using automatic environment texturing. | [code](https://github.com/olexale/arkit_flutter_plugin/blob/master/example/lib/reflective_sphere_page.dart) | |
 | Custom Object | Place custom object on plane with coaching overlay.                         | [code](https://github.com/olexale/arkit_flutter_plugin/blob/master/example/lib/custom_object_page.dart) | [twitter](https://twitter.com/OlexaLe/status/1121037162852569090) |
 | Load .gltf .glb | Load .gltf or .glb from the Flutter assets or the Documents folder.         | [code](https://github.com/olexale/arkit_flutter_plugin/blob/master/example/lib/load_gltf_or_glb_page.dart) | |
 | Occlusion | Spheres which are not visible after horizontal and vertical planes.         | [code](https://github.com/olexale/arkit_flutter_plugin/blob/master/example/lib/occlusion_page.dart)|[twitter](https://twitter.com/OlexaLe/status/1121421315364274177) |
@@ -117,6 +118,33 @@ I would highly recommend to review the [sample](https://github.com/olexale/arkit
 If you prefer video here is a playlist with "AR in Flutter" videos:
 
 [![AR in Flutter videos](https://img.youtube.com/vi/gOgCdl5_E7k/0.jpg)](https://www.youtube.com/watch?v=MaH4L6R8ZfQ&list=PLjaSBcAZ8TqGoWj3FE96uQ2gGPDGaXbDp "AR in Flutter videos")
+
+## HDR Environment Reflections
+
+Enable realistic reflections on metallic surfaces by using ARKit's automatic environment texturing. This feature captures the real-world environment and applies it as reflections on PBR materials.
+
+### How to enable in 3 lines of code:
+
+```dart
+ARKitSceneView(
+  onARKitViewCreated: onARKitViewCreated,
+  environmentTexturing: ARWorldTrackingConfigurationEnvironmentTexturing.automatic, // Enable automatic environment texturing
+)
+```
+
+Then create reflective materials:
+```dart
+final material = ARKitMaterial(
+  lightingModelName: ARKitLightingModel.physicallyBased,
+  metalness: ARKitMaterialProperty.value(1.0), // Fully metallic
+  roughness: ARKitMaterialProperty.value(0.0), // Mirror-like surface
+);
+```
+
+**Requirements:**
+- iOS 12.0 or later
+- A9 processor or newer
+- Works best with bright lighting conditions
 
 ## UX advice
 You might want to check the device capabilities before establishing an AR session. Review the [Check Support](https://github.com/olexale/arkit_flutter_plugin/blob/master/example/lib/check_support_page.dart) sample for the implementation details.

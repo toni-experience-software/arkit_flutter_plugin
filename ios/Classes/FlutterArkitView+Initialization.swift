@@ -9,6 +9,9 @@ extension FlutterArkitView {
         if let autoenablesDefaultLighting = arguments["autoenablesDefaultLighting"] as? Bool {
             sceneView.autoenablesDefaultLighting = autoenablesDefaultLighting
         }
+        
+        // Enable automatic lighting updates for environment texturing
+        sceneView.automaticallyUpdatesLighting = true
 
         if let forceUserTapOnCenter = arguments["forceUserTapOnCenter"] as? Bool {
             forceTapOnCenter = forceUserTapOnCenter
